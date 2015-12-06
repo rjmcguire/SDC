@@ -702,7 +702,7 @@ struct SymbolAnalyzer {
 					c.addSymbol(field);
 				} else if (auto method = cast(Method) m) {
 					baseMethods ~= method;
-					methodIndex = max(methodIndex, method.index);
+					methodIndex = max(methodIndex, method.index + 1);
 					
 					c.addOverloadableSymbol(method);
 				}
@@ -785,7 +785,7 @@ struct SymbolAnalyzer {
 						}
 					}
 					
-					if (method.index == 0) {
+					if (method.index == -1) {
 						method.index = candidate.index;
 						
 						// Remove candidate from scope.
@@ -818,7 +818,7 @@ struct SymbolAnalyzer {
 					}
 				}
 				
-				if (method.index == 0) {
+				if (method.index == -1) {
 					import d.exception;
 					throw new CompileException(
 						method.location,
